@@ -1,0 +1,200 @@
+# ============================================================
+# Greenfield Secondary — fully worked EXAMPLE configuration
+# A fictional 3-grade school on a ONE-WEEK cycle showing every
+# major feature: curriculum mode (classes generated from student
+# numbers), the band model, automatic staffing, option blocks,
+# a part-time teacher, a dual-subject teacher, specialist rooms,
+# leadership loads and double-period rules. Copy and adapt.
+# ============================================================
+
+school:
+  name: Greenfield Secondary
+  academic_year: 2026-27
+  class_size_max: 30
+
+grid:
+  weeks: [Wk]                       # one-week cycle (use [A, B] for two-week)
+  days: [Monday, Tuesday, Wednesday, Thursday, Friday]
+  periods:
+    - {id: HR,    kind: registration, start: "08:00", end: "08:15"}
+    - {id: P1,    kind: teaching,     start: "08:15", end: "09:10"}
+    - {id: P2,    kind: teaching,     start: "09:10", end: "10:05"}
+    - {id: P3,    kind: teaching,     start: "10:05", end: "11:00"}
+    - {id: Break, kind: break,        start: "11:00", end: "11:25"}
+    - {id: P4,    kind: teaching,     start: "11:25", end: "12:20"}
+    - {id: P5,    kind: teaching,     start: "12:20", end: "13:15"}
+    - {id: Lunch, kind: break,        start: "13:15", end: "14:00"}
+    - {id: P6,    kind: teaching,     start: "14:00", end: "14:55"}
+  day_overrides: {}                 # e.g. Friday: [HR, P1, P2, P3, P4]
+
+room_types: [classroom, science_lab, arts_space, pe_space]
+
+rooms:
+  - {id: C1,  type: classroom, seats: 30}
+  - {id: C2,  type: classroom, seats: 30}
+  - {id: C3,  type: classroom, seats: 30}
+  - {id: C4,  type: classroom, seats: 30}
+  - {id: C5,  type: classroom, seats: 30}
+  - {id: C6,  type: classroom, seats: 30}
+  - {id: C7,  type: classroom, seats: 30}
+  - {id: C8,  type: classroom, seats: 30}
+  - {id: C9,  type: classroom, seats: 30}
+  - {id: C10, type: classroom, seats: 30}
+  - {id: C11, type: classroom, seats: 30}
+  - {id: C12, type: classroom, seats: 30}
+  - {id: LAB1, type: science_lab, seats: 28}
+  - {id: LAB2, type: science_lab, seats: 28}
+  - {id: LAB3, type: science_lab, seats: 28}
+  - {id: ART1, type: arts_space, seats: 28}   # art studio
+  - {id: DT1,  type: arts_space, seats: 24}   # workshop
+  - {id: MUS1, type: arts_space, seats: 28}   # music room
+  - {id: HALL, type: pe_space,   seats: 64, max_parallel: 2}
+
+subjects:
+  - {id: Maths,        department: Mathematics, room_types: [classroom]}
+  - {id: English,      department: English,     room_types: [classroom]}
+  - {id: Science,      department: Science,     room_types: [science_lab],
+     doubles: prefer, max_per_day: 2}
+  - {id: French,       department: Languages,   room_types: [classroom]}
+  - {id: Humanities,   department: Humanities,  room_types: [classroom]}
+  - {id: PE,           department: PE,          room_types: [pe_space]}
+  - {id: CreativeArts, department: The Arts,    room_types: [arts_space]}
+  - {id: Art,          department: The Arts,    room_types: [arts_space]}
+  - {id: DT,           department: The Arts,    room_types: [arts_space],
+     doubles: require, max_per_day: 2}
+  - {id: Music,        department: The Arts,    room_types: [arts_space]}
+  - {id: Computing,    department: Computing,   room_types: [classroom]}
+  - {id: Wellbeing,    department: Pastoral,    room_types: [classroom]}
+
+staffing:
+  tiers:                       # max teaching periods per WEEK
+    classroom_teacher: 25
+    middle_leader: 18
+    assistant_head: 12
+    slt: 0
+  leadership_overrides:        # fill in any time; names or ids both work
+    Priya Sharma: assistant_head
+  teachers:
+    - {id: MAT1, name: Alan Turner,    subjects: [Maths]}
+    - {id: MAT2, name: Beth Hardy,     subjects: [Maths]}
+    - {id: MAT3, name: Carl Osei,      subjects: [Maths]}
+    - {id: SCM1, name: Dana Petrov,    subjects: [Science, Maths]}  # dual
+    - {id: ENG1, name: Emma Riley,     subjects: [English]}
+    - {id: ENG2, name: Farid Khan,     subjects: [English]}
+    - {id: ENG3, name: Grace Liu,      subjects: [English]}
+    - {id: ENG4, name: Hugo Mendes,    subjects: [English, Humanities]}
+    - {id: SCI1, name: Iris Novak,     subjects: [Science]}
+    - {id: SCI2, name: Jack Doyle,     subjects: [Science]}
+    - {id: SCI3, name: Kira Tanaka,    subjects: [Science]}
+    - {id: FRE1, name: Luc Bernard,    subjects: [French]}
+    - {id: FRE2, name: Marie Colbert,  subjects: [French, Wellbeing]}
+    - {id: FRE3, name: Wendy Fox,      subjects: [French]}
+    - {id: HUM1, name: Noor Haddad,    subjects: [Humanities]}
+    - {id: HUM2, name: Owen Pryce,     subjects: [Humanities, Computing]}
+    - {id: PE1,  name: Pat Quinn,      subjects: [PE]}
+    - {id: PE2,  name: Rosa Diaz,      subjects: [PE, Wellbeing]}
+    - {id: ART1T, name: Sam Becker,    subjects: [CreativeArts, Art]}
+    - {id: DT1T,  name: Tessa Wright,  subjects: [CreativeArts, DT]}
+    - {id: MUS1T, name: Uma Patel,     subjects: [CreativeArts, Music, Computing],
+       # part-time: not in school on Fridays
+       unavailable: [Wk.Friday.P1, Wk.Friday.P2, Wk.Friday.P3,
+                     Wk.Friday.P4, Wk.Friday.P5, Wk.Friday.P6]}
+    - {id: AHT1, name: Priya Sharma,   subjects: [Maths, Computing]}
+    - {id: WEL1, name: Viktor Eriksen, subjects: [Wellbeing, Humanities]}
+
+year_groups:
+  # ---- band model: each grade splits into two bands; within a band the
+  # ---- parallel sets of a subject run simultaneously (one block each)
+  - id: G7
+    students: 120
+    populations:
+      - {id: G7.X, size: 60}
+      - {id: G7.Y, size: 60}
+    curriculum:   # one row per band per subject; 30 periods per student
+      - {subject: Maths,        periods_per_cycle: 5, population: G7.X}
+      - {subject: Maths,        periods_per_cycle: 5, population: G7.Y}
+      - {subject: English,      periods_per_cycle: 5, population: G7.X}
+      - {subject: English,      periods_per_cycle: 5, population: G7.Y}
+      - {subject: Science,      periods_per_cycle: 5, population: G7.X}
+      - {subject: Science,      periods_per_cycle: 5, population: G7.Y}
+      - {subject: French,       periods_per_cycle: 3, population: G7.X}
+      - {subject: French,       periods_per_cycle: 3, population: G7.Y}
+      - {subject: Humanities,   periods_per_cycle: 3, population: G7.X}
+      - {subject: Humanities,   periods_per_cycle: 3, population: G7.Y}
+      - {subject: PE,           periods_per_cycle: 2, population: G7.X, classes: 2}
+      - {subject: PE,           periods_per_cycle: 2, population: G7.Y, classes: 2}
+      - {subject: CreativeArts, periods_per_cycle: 4, population: G7.X}
+      - {subject: CreativeArts, periods_per_cycle: 4, population: G7.Y}
+      - {subject: Computing,    periods_per_cycle: 2, population: G7.X}
+      - {subject: Computing,    periods_per_cycle: 2, population: G7.Y}
+      - {subject: Wellbeing,    periods_per_cycle: 1, population: G7.X}
+      - {subject: Wellbeing,    periods_per_cycle: 1, population: G7.Y}
+  - id: G8
+    students: 104
+    populations:
+      - {id: G8.X, size: 52}
+      - {id: G8.Y, size: 52}
+    curriculum:
+      - {subject: Maths,        periods_per_cycle: 5, population: G8.X}
+      - {subject: Maths,        periods_per_cycle: 5, population: G8.Y}
+      - {subject: English,      periods_per_cycle: 5, population: G8.X}
+      - {subject: English,      periods_per_cycle: 5, population: G8.Y}
+      - {subject: Science,      periods_per_cycle: 5, population: G8.X}
+      - {subject: Science,      periods_per_cycle: 5, population: G8.Y}
+      - {subject: French,       periods_per_cycle: 3, population: G8.X}
+      - {subject: French,       periods_per_cycle: 3, population: G8.Y}
+      - {subject: Humanities,   periods_per_cycle: 3, population: G8.X}
+      - {subject: Humanities,   periods_per_cycle: 3, population: G8.Y}
+      - {subject: PE,           periods_per_cycle: 2, population: G8.X, classes: 2}
+      - {subject: PE,           periods_per_cycle: 2, population: G8.Y, classes: 2}
+      - {subject: CreativeArts, periods_per_cycle: 4, population: G8.X}
+      - {subject: CreativeArts, periods_per_cycle: 4, population: G8.Y}
+      - {subject: Computing,    periods_per_cycle: 2, population: G8.X}
+      - {subject: Computing,    periods_per_cycle: 2, population: G8.Y}
+      - {subject: Wellbeing,    periods_per_cycle: 1, population: G8.X}
+      - {subject: Wellbeing,    periods_per_cycle: 1, population: G8.Y}
+  - id: G9
+    students: 60
+    curriculum:
+      - {subject: Maths,     periods_per_cycle: 5}
+      - {subject: English,   periods_per_cycle: 5}
+      - {subject: Science,   periods_per_cycle: 5}
+      - {subject: French,    periods_per_cycle: 3}
+      - {subject: PE,        periods_per_cycle: 2, classes: 2}
+      - {subject: Computing, periods_per_cycle: 2}
+      - {subject: Wellbeing, periods_per_cycle: 1}
+      # ---- option columns: each student picks one subject per block ----
+      - {subject: Humanities, periods_per_cycle: 3, participants: 24,
+         classes: 1, simultaneous: false}
+      - {subject: Art,        periods_per_cycle: 3, participants: 20,
+         classes: 1, simultaneous: false}
+      - {subject: Computing,  periods_per_cycle: 3, participants: 16,
+         classes: 1, simultaneous: false}
+      - {subject: DT,         periods_per_cycle: 4, participants: 22,
+         classes: 1, simultaneous: false}
+      - {subject: Music,      periods_per_cycle: 4, participants: 18,
+         classes: 1, simultaneous: false}
+      - {subject: French,     periods_per_cycle: 4, participants: 20,
+         classes: 1, simultaneous: false}
+
+# option blocks reference generated ids: <population>/<Subject><n>
+# (G9 French core makes G9/French1..3, so the option group is G9/French3)
+blocks:
+  - id: G9-OptionBlock-A
+    sections: [G9/Humanities1, G9/Art1, G9/Computing3]
+    periods_per_cycle: 3
+  - id: G9-OptionBlock-B
+    sections: [G9/DT1, G9/Music1, G9/French3]
+    periods_per_cycle: 4
+
+solver:
+  time_limit_s: 120
+  workers: 0
+  seed: 7
+
+weights:
+  spread_same_day: 20
+  spread_week_imbalance: 0   # one-week cycle: not applicable
+  teacher_gaps: 3
+  teacher_daily_overload: 5
+  doubles_prefer: 10
